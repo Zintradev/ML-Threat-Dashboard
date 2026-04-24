@@ -1,26 +1,26 @@
 # 🚀 QUICK START GUIDE
 
-## 📋 Prerequisitos
-- **Docker** (opcional, recomendado para despliegue rápido)
-- **Python 3.9+** y entorno virtual
-- **Node.js** (para el frontend)
+## 📋 Prerequisites
+- **Docker** (optional, recommended for quick deployment)
+- **Python 3.9+** and virtual environment
+- **Node.js** (for the frontend)
 
-## 🛠️ Backend (ya corregido)
-El archivo `backend/main.py` está corregido y listo para ejecutarse. No necesitas hacer cambios manuales.
+## 🛠️ Backend (Already Fixed)
+The `backend/main.py` file is fixed and ready to run. You don't need to make manual changes.
 
-## � Opción 1: Ejecutar con Docker (recomendado)
+## 🐳 Option 1: Run with Docker (Recommended)
 ```powershell
-# Desde la raíz del proyecto
+# From the project root
 docker-compose up --build
 ```
 - **Frontend:** http://localhost:3000
 - **Backend:** http://localhost:8000
 
-## 💻 Opción 2: Ejecutar localmente
+## 💻 Option 2: Run Locally
 ### Backend
 ```powershell
 cd backend
-# Activar entorno virtual (ajusta la ruta si es necesario)
+# Activate virtual environment (adjust path if necessary)
 .\ml_threat_dashboard\Scripts\Activate.ps1
 pip install -r requirements.txt
 python main.py
@@ -32,19 +32,19 @@ npm install
 npm start
 ```
 
-## ✅ Verificar que funciona
-1. **Backend**: Navega a `http://localhost:8000` y deberías ver
+## ✅ Verify it works
+1. **Backend**: Navigate to `http://localhost:8000` and you should see:
    ```json
    {"message":"Real Traffic ML Detection v2.2","status":"operational"}
    ```
-2. **Frontend**: Abre `http://localhost:3000` y el dashboard debería cargar.
-3. **Documentación API**: `http://localhost:8000/docs` muestra la UI interactiva.
+2. **Frontend**: Open `http://localhost:3000` and the dashboard should load.
+3. **API Documentation**: `http://localhost:8000/docs` shows the interactive UI.
 
-## � Próximos pasos
-- Entrenar el modelo con datos reales: `python backend/train_model.py`
-- Explorar la API y personalizar reglas.
+## 🔮 Next Steps
+- Train the model with real data: `python backend/train_model.py`
+- Explore the API and customize rules.
 
-## 🛠️ Solución de problemas
-- **Model file not found**: Ejecuta el script de entrenamiento para generar `real_traffic_model.pkl`.
-- **Port 3000 already in use**: Cambia el puerto en `docker-compose.yml` o libera el puerto.
-- **Docker no está instalado**: Instala Docker Desktop desde https:
+## 🛠️ Troubleshooting
+- **Model file not found**: Run the training script to generate `real_traffic_model.pkl`.
+- **Port 3000 already in use**: Change the port in `docker-compose.yml` or free up the port.
+- **Docker not installed**: Install Docker Desktop from https://www.docker.com/products/docker-desktop/

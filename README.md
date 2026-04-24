@@ -1,147 +1,147 @@
 # ML Threat Dashboard 🛡️
 
-Dashboard de detección de amenazas ML con análisis de tráfico de red en tiempo real usando Machine Learning.
+ML-powered threat detection dashboard with real-time network traffic analysis using Machine Learning.
 
-## 📋 Descripción
+## 📋 Description
 
-Sistema de detección de amenazas que analiza tráfico de red HTTP/HTTPS en tiempo real, clasifica ataques usando ML y mapea las amenazas detectadas al framework MITRE ATT&CK.
+Threat detection system that analyzes HTTP/HTTPS network traffic in real-time, classifies attacks using ML, and maps detected threats to the MITRE ATT&CK framework.
 
-### Características
+### Features
 
-- ✅ Detección de amenazas en tiempo real usando Machine Learning
-- ✅ Análisis de tráfico HTTP/HTTPS con MITMProxy
-- ✅ Clasificación de ataques (DDoS, SQL Injection, XSS, etc.)
-- ✅ Mapeo a MITRE ATT&CK Framework
-- ✅ Dashboard interactivo con React y TypeScript
-- ✅ API REST con FastAPI
-- ✅ Dockerizado para fácil despliegue
+- ✅ Real-time threat detection using Machine Learning
+- ✅ HTTP/HTTPS traffic analysis with MITMProxy
+- ✅ Attack classification (DDoS, SQL Injection, XSS, etc.)
+- ✅ MITRE ATT&CK Framework mapping
+- ✅ Interactive dashboard with React and TypeScript
+- ✅ REST API with FastAPI
+- ✅ Dockerized for easy deployment
 
-## 🚀 Inicio Rápido con Docker (Recomendado)
+## 🚀 Quick Start with Docker (Recommended)
 
-### Prerequisitos
-- [Docker](https:
-- [Docker Compose](https:
+### Prerequisites
+- [Docker](https://www.docker.com/products/docker-desktop/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
 
-### Ejecución
+### Execution
 
 ```bash
-# Clonar repositorio
-git clone https:
+# Clone repository
+git clone https://github.com/Zintradev/ML-Threat-Dashboard.git
 cd ML-Threat-Dashboard
 
-# Ejecutar con Docker Compose
+# Run with Docker Compose
 docker-compose up --build
 ```
 
-**Accede a:**
+**Access:**
 - 🌐 Frontend: http://localhost:3000
 - 🔧 Backend API: http://localhost:8000
 - 📚 API Docs: http://localhost:8000/docs
 
-### Detener servicios
+### Stop services
 
 ```bash
 docker-compose down
 ```
 
-## 🛠️ Desarrollo Local (Sin Docker)
+## 🛠️ Local Development (Without Docker)
 
 ### Backend
 
 ```bash
 cd backend
 
-# Crear entorno virtual
+# Create virtual environment
 python -m venv venv
 
-# Activar entorno virtual
+# Activate virtual environment
 # Windows:
 venv\Scripts\activate
 # Linux/Mac:
 source venv/bin/activate
 
-# Instalar dependencias
+# Install dependencies
 pip install -r requirements.txt
 
-# Ejecutar servidor
+# Run server
 python main.py
 ```
 
-Backend disponible en: http://localhost:8000
+Backend available at: http://localhost:8000
 
 ### Frontend
 
 ```bash
 cd frontend/ml-threat-dashboard
 
-# Instalar dependencias
+# Install dependencies
 npm install
 
-# Ejecutar en modo desarrollo
+# Run in development mode
 npm start
 ```
 
-Frontend disponible en: http://localhost:3000
+Frontend available at: http://localhost:3000
 
-## 📊 Tecnologías
+## 📊 Technologies
 
 ### Backend
 - **Python 3.11**
-- **FastAPI** - Framework web moderno y rápido
+- **FastAPI** - Modern and fast web framework
 - **scikit-learn** - Machine Learning
-- **MITMProxy** - Interceptación de tráfico
-- **joblib** - Serialización de modelos
+- **MITMProxy** - Traffic interception
+- **joblib** - Model serialization
 
 ### Frontend
-- **React 18** con TypeScript
-- **CSS3** con diseño moderno
+- **React 18** with TypeScript
+- **CSS3** with modern design
 
 ### Machine Learning
-- **Algoritmo**: Random Forest Classifier
+- **Algorithm**: Random Forest Classifier
 - **Dataset**: NSL-KDD (Network Security Dataset)
-- **Características**: Análisis de patrones de tráfico HTTP/HTTPS
+- **Features**: HTTP/HTTPS traffic pattern analysis
 
 ### DevOps
-- **Docker** - Containerización
-- **Docker Compose** - Orquestación
-- **Nginx** - Servidor web para frontend
+- **Docker** - Containerization
+- **Docker Compose** - Orchestration
+- **Nginx** - Web server for frontend
 
-## 📁 Estructura del Proyecto
+## 📁 Project Structure
 
 ```
 ML-Threat-Dashboard/
-├── backend/                    # Backend FastAPI
-│   ├── main.py                # Servidor principal
-│   ├── train_model.py         # Entrenamiento (datos sintéticos)
-│   ├── train_with_nsl_kdd.py  # Entrenamiento (datos reales NSL-KDD)
-│   ├── generate_attacks.py    # Generador de ataques simulados
-│   ├── mitmproxy_addon.py     # Addon para MITMProxy
-│   ├── requirements.txt       # Dependencias Python
-│   ├── real_traffic_model.pkl # Modelo ML entrenado
-│   └── *.pkl                  # Encoders y scalers
-├── frontend/                   # Frontend React
+├── backend/                    # FastAPI Backend
+│   ├── main.py                # Main server
+│   ├── train_model.py         # Training (synthetic data)
+│   ├── train_with_nsl_kdd.py  # Training (real NSL-KDD data)
+│   ├── generate_attacks.py    # Simulated attack generator
+│   ├── mitmproxy_addon.py     # MITMProxy Addon
+│   ├── requirements.txt       # Python dependencies
+│   ├── real_traffic_model.pkl # Trained ML model
+│   └── *.pkl                  # Encoders and scalers
+├── frontend/                   # React Frontend
 │   └── ml-threat-dashboard/
 │       ├── src/
 │       ├── public/
 │       └── package.json
 ├── data/                       # Datasets
-│   └── NSL_KDD-master/        # Dataset NSL-KDD
+│   └── NSL_KDD-master/        # NSL-KDD Dataset
 ├── notebooks/                  # Jupyter notebooks
 │   └── exploratory_analysis.ipynb
-├── Dockerfile.backend          # Dockerfile para backend
-├── Dockerfile.frontend         # Dockerfile para frontend
-├── docker-compose.yml          # Orquestación Docker
-├── nginx.conf                  # Configuración Nginx
-├── .dockerignore              # Archivos excluidos de Docker
-├── .gitignore                 # Archivos excluidos de Git
-└── README.md                  # Este archivo
+├── Dockerfile.backend          # Backend Dockerfile
+├── Dockerfile.frontend         # Frontend Dockerfile
+├── docker-compose.yml          # Docker Orchestration
+├── nginx.conf                  # Nginx Configuration
+├── .dockerignore              # Docker excluded files
+├── .gitignore                 # Git excluded files
+└── README.md                  # This file
 ```
 
-## 🔧 Configuración
+## 🔧 Configuration
 
-### Variables de Entorno
+### Environment Variables
 
-Puedes configurar las siguientes variables en `docker-compose.yml`:
+You can configure the following variables in `docker-compose.yml`:
 
 ```yaml
 environment:
@@ -149,41 +149,41 @@ environment:
   - LOG_LEVEL=INFO
 ```
 
-### Modelos ML
+### ML Models
 
-El proyecto incluye los siguientes modelos pre-entrenados:
-- `real_traffic_model.pkl` - Modelo principal de clasificación
-- `label_encoder_y.pkl` - Encoder para etiquetas
-- `label_encoders.pkl` - Encoders para características
-- `scaler.pkl` - Scaler para normalización
+The project includes the following pre-trained models:
+- `real_traffic_model.pkl` - Main classification model
+- `label_encoder_y.pkl` - Label encoder
+- `label_encoders.pkl` - Feature encoders
+- `scaler.pkl` - Scaler for normalization
 
-## 📈 Uso
+## 📈 Usage
 
-### 1. Iniciar el Sistema
+### 1. Start the System
 
 ```bash
 docker-compose up -d
 ```
 
-### 2. Generar Tráfico de Prueba
+### 2. Generate Test Traffic
 
 ```bash
-# Desde el directorio backend
+# From backend directory
 python generate_attacks.py
 ```
 
-### 3. Ver Detecciones en el Dashboard
+### 3. View Detections in Dashboard
 
-Abre http://localhost:3000 y observa las detecciones en tiempo real.
+Open http://localhost:3000 and watch real-time detections.
 
 ### 4. API Endpoints
 
-- `GET /` - Estado del sistema
-- `GET /status` - Estado detallado con estadísticas
-- `POST /scan` - Iniciar escaneo
-- `POST /capture` - Capturar request
-- `GET /results` - Obtener resultados del análisis
-- `POST /stop` - Detener escaneo
+- `GET /` - System status
+- `GET /status` - Detailed status with statistics
+- `POST /scan` - Start scan
+- `POST /capture` - Capture request
+- `GET /results` - Get analysis results
+- `POST /stop` - Stop scan
 
 ## 🧪 Testing
 
@@ -201,39 +201,38 @@ cd frontend/ml-threat-dashboard
 npm test
 ```
 
-## 📝 Notas Importantes
+## 📝 Important Notes
 
-- El entorno virtual (`ml_threat_dashboard/`) está excluido del repositorio
-- Los modelos grandes no utilizados fueron eliminados para optimizar el tamaño
-- El proyecto usa `.gitignore` y `.dockerignore` para mantener el repo limpio
-- Para producción, considera usar variables de entorno para configuración sensible
+- The virtual environment (`ml_threat_dashboard/`) is excluded from the repository
+- Large unused models were removed to optimize size
+- The project uses `.gitignore` and `.dockerignore` to keep the repo clean
+- For production, consider using environment variables for sensitive configuration
 
-## 🤝 Contribuciones
+## 🤝 Contributions
 
-Las contribuciones son bienvenidas. Por favor:
+Contributions are welcome. Please:
 
-1. Fork el proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
+1. Fork the project
+2. Create a branch for your feature (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## 📄 Licencia
+## 📄 License
 
-Este proyecto está bajo la Licencia MIT. Ver archivo `LICENSE` para más detalles.
+This project is under the MIT License. See `LICENSE` file for more details.
 
-## 👤 Autor
+## 👤 Author
 
-**Tu Nombre**
-- GitHub: [@tuusuario](https:
-- LinkedIn: [Tu Perfil](https:
+**Your Name**
+- GitHub: [@Zintradev](https://github.com/Zintradev)
 
-## 🙏 Agradecimientos
+## 🙏 Acknowledgements
 
-- Dataset NSL-KDD por proporcionar datos de entrenamiento
-- MITRE ATT&CK Framework por la taxonomía de amenazas
-- Comunidad de FastAPI y React por las excelentes herramientas
+- NSL-KDD Dataset for providing training data
+- MITRE ATT&CK Framework for threat taxonomy
+- FastAPI and React communities for excellent tools
 
 ---
 
-⭐ Si este proyecto te fue útil, considera darle una estrella en GitHub!
+⭐ If you found this project useful, consider giving it a star on GitHub!

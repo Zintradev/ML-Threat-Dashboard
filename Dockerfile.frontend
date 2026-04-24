@@ -12,6 +12,7 @@ RUN npm ci
 COPY frontend/ml-threat-dashboard/ .
 
 # Build de producción
+ENV REACT_APP_API_URL=/api
 RUN npm run build
 
 # Etapa de producción con nginx
