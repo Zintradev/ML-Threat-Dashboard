@@ -1,4 +1,4 @@
-// frontend/src/types.ts
+
 export interface SystemStatus {
   system: {
     status: string;

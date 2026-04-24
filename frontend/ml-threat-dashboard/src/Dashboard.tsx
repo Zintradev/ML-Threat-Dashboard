@@ -10,6 +10,7 @@ interface MLAnalysis {
   attack_type: string;
   real_ml: boolean;
   success: boolean;
+  mitre_id?: string;
 }
 
 interface TrafficData {
@@ -61,15 +62,16 @@ interface SystemStatus {
   };
 }
 
-// =============================================================================
-// COLOR SCHEME & STYLING
-// =============================================================================
+
+
+
 const getAttackColor = (attackType: string) => {
-  switch(attackType) {
+  switch (attackType) {
     case 'DoS': return '#ef4444';
-    case 'Probe': return '#f59e0b';
-    case 'R2L': return '#8b5cf6';
-    case 'U2R': return '#ec4899';
+    case 'SQL Injection': return '#f59e0b';
+    case 'XSS': return '#8b5cf6';
+    case 'Path Traversal': return '#ec4899';
+    case 'Suspicious Activity': return '#f97316';
     default: return '#10b981';
   }
 };
@@ -86,9 +88,9 @@ const getConfidenceLevel = (confidence: number) => {
   return 'Low';
 };
 
-// =============================================================================
-// MAIN DASHBOARD COMPONENT
-// =============================================================================
+
+
+
 const Dashboard: React.FC = () => {
   const [targetUrl, setTargetUrl] = useState('http://testphp.vulnweb.com');
   const [isScanning, setIsScanning] = useState(false);
@@ -140,7 +142,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className="dashboard">
-      {/* HEADER WITH GRADIENT */}
+      {}
       <header className="header">
         <div className="header-content">
           <div className="header-icon">🛡️</div>
@@ -151,11 +153,11 @@ const Dashboard: React.FC = () => {
         </div>
       </header>
 
-      {/* MAIN CONTENT GRID */}
+      {}
       <div className="main-grid">
-        {/* LEFT COLUMN - CONTROLS & STATUS */}
+        {}
         <div className="left-column">
-          {/* SCANNER CONTROL CARD */}
+          {}
           <div className="scanner-card glass-card">
             <div className="card-header">
               <div className="card-icon">🔍</div>
@@ -169,9 +171,9 @@ const Dashboard: React.FC = () => {
                 placeholder="Enter target website URL..."
                 className="url-input"
               />
-              <button 
-                onClick={startScan} 
-                disabled={isScanning} 
+              <button
+                onClick={startScan}
+                disabled={isScanning}
                 className={`scan-btn ${isScanning ? 'scanning' : ''}`}
               >
                 <span className="btn-icon">
@@ -197,7 +199,7 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
 
-          {/* SYSTEM STATUS CARD */}
+          {}
           {systemStatus && (
             <div className="status-card glass-card">
               <div className="card-header">
@@ -209,23 +211,7 @@ const Dashboard: React.FC = () => {
                   <div className="status-icon">🤖</div>
                   <div className="status-content">
                     <div className="status-label">ML Model</div>
-                    <div className="status-value">
-                      {systemStatus.components.ml_model.real_model ? 'REAL MODEL' : 'SIMULATION'}
-                    </div>
-                  </div>
-                </div>
-                <div className={`status-item ${systemStatus.components.mitmproxy.status === 'running' ? 'status-success' : 'status-warning'}`}>
-                  <div className="status-icon">📡</div>
-                  <div className="status-content">
-                    <div className="status-label">MITMProxy</div>
-                    <div className="status-value">{systemStatus.components.mitmproxy.status.toUpperCase()}</div>
-                  </div>
-                </div>
-                <div className="status-item status-success">
-                  <div className="status-icon">🌐</div>
-                  <div className="status-content">
-                    <div className="status-label">Data Source</div>
-                    <div className="status-value">REAL TRAFFIC</div>
+                    <div className="status-value">{systemStatus.components.ml_model.real_model ? 'REAL MODEL' : 'MOCK'}</div>
                   </div>
                 </div>
                 <div className="status-item status-success">
@@ -246,7 +232,7 @@ const Dashboard: React.FC = () => {
           )}
         </div>
 
-        {/* RIGHT COLUMN - RESULTS */}
+        {}
         <div className="right-column">
           {results && (
             <div className="results-card glass-card">
@@ -257,18 +243,18 @@ const Dashboard: React.FC = () => {
                   {results.stats.total_requests} requests
                 </div>
               </div>
-              
-              {/* STATISTICS GRID */}
+
+              {}
               <div className="stats-grid">
                 <div className="stat-card">
-                  <div className="stat-icon">📨</div>
+                  <div className="stat-icon">�</div>
                   <div className="stat-content">
                     <div className="stat-value">{results.stats.total_requests}</div>
                     <div className="stat-label">Total Requests</div>
                   </div>
                 </div>
                 <div className="stat-card threat-stat">
-                  <div className="stat-icon">🚨</div>
+                  <div className="stat-icon">�🚨</div>
                   <div className="stat-content">
                     <div className="stat-value">{results.stats.threats_detected}</div>
                     <div className="stat-label">Threats Detected</div>
@@ -290,7 +276,7 @@ const Dashboard: React.FC = () => {
                 </div>
               </div>
 
-              {/* TRAFFIC LIST WITH SCROLL */}
+              {}
               <div className="traffic-section">
                 <div className="section-header">
                   <h4>Recent Traffic</h4>
@@ -305,7 +291,7 @@ const Dashboard: React.FC = () => {
                     const attackColor = getAttackColor(traffic.ml_analysis.attack_type);
                     const confidenceColor = getConfidenceColor(traffic.ml_analysis.confidence);
                     const confidenceLevel = getConfidenceLevel(traffic.ml_analysis.confidence);
-                    
+
                     return (
                       <div key={index} className={`traffic-item ${traffic.is_threat ? 'threat-item' : 'normal-item'}`}>
                         <div className="traffic-main">
@@ -324,9 +310,9 @@ const Dashboard: React.FC = () => {
                             </div>
                           </div>
                           <div className="traffic-status">
-                            <div 
+                            <div
                               className={`threat-badge ${traffic.is_threat ? 'threat' : 'normal'}`}
-                              style={{ 
+                              style={{
                                 backgroundColor: traffic.is_threat ? '#ef4444' : '#10b981'
                               }}
                             >
@@ -334,12 +320,12 @@ const Dashboard: React.FC = () => {
                             </div>
                           </div>
                         </div>
-                        
+
                         <div className="traffic-details">
                           <div className="detail-group">
                             <div className="detail-item">
                               <span className="detail-label">Attack Type:</span>
-                              <span 
+                              <span
                                 className="attack-type"
                                 style={{ color: attackColor }}
                               >
@@ -349,14 +335,14 @@ const Dashboard: React.FC = () => {
                             <div className="detail-item">
                               <span className="detail-label">Confidence:</span>
                               <div className="confidence-display">
-                                <div 
+                                <div
                                   className="confidence-bar"
-                                  style={{ 
+                                  style={{
                                     width: `${traffic.ml_analysis.confidence * 100}%`,
                                     backgroundColor: confidenceColor
                                   }}
                                 ></div>
-                                <span 
+                                <span
                                   className="confidence-value"
                                   style={{ color: confidenceColor }}
                                 >
@@ -364,8 +350,16 @@ const Dashboard: React.FC = () => {
                                 </span>
                               </div>
                             </div>
+                            {traffic.ml_analysis.mitre_id && (
+                              <div className="detail-item">
+                                <span className="detail-label">MITRE ATT&CK:</span>
+                                <span className="mitre-id" style={{ color: '#8b5cf6', fontWeight: 'bold' }}>
+                                  {traffic.ml_analysis.mitre_id}
+                                </span>
+                              </div>
+                            )}
                           </div>
-                          
+
                           {traffic.ml_analysis.real_ml && (
                             <div className="ml-badge">
                               🤖 Real ML Analysis
@@ -382,7 +376,7 @@ const Dashboard: React.FC = () => {
                       </div>
                     );
                   })}
-                  
+
                   {results.analysis_results.length === 0 && (
                     <div className="no-traffic">
                       <div className="no-traffic-icon">📡</div>
