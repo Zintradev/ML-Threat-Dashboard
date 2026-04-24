@@ -1,0 +1,8 @@
+Detección de ataque DDoS ahora solo detecta varias peticiones normales en vez de ataque DDoS(tal vez porque se necesita una gran escala de ataques)
+Ver logs del backend para corregir errores
+Ver como se entrena el modelo, con que sets y con que valores
+Limpiar carpetas y archivos no necesarios
+Mantener tamaño del modelo para guardar los cambios al github
+Revisar código para limpiarlo y ver funcionalidad exacta(datos de alto y bajo nivel que obtiene el proxy)
+Usar MITRE para análisis forense de ataque
+Aumentar flexibilidad y accuracy del modelo

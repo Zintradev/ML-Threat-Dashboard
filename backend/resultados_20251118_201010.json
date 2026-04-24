@@ -1,0 +1,20 @@
+{
+  "timestamp": "20251118_201010",
+  "test_accuracy": 0.7512753404604534,
+  "train_accuracy": 0.9989839092503949,
+  "overfitting": 0.24770856878994152,
+  "classes": [
+    "dos",
+    "normal",
+    "probe",
+    "r2l",
+    "u2r"
+  ],
+  "dataset_info": {
+    "train_instances": 125973,
+    "test_instances": 22543,
+    "features": 41,
+    "train_classes": 5,
+    "test_classes": 5
+  }
+}
