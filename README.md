@@ -209,22 +209,32 @@ npm test
 - For production, consider using environment variables for sensitive configuration
 
 ## 🤝 Contributions
+This project is primarily for educational purposes. While the code is proprietary, suggestions and improvements for learning purposes are welcome.
 
-Contributions are welcome. Please:
+If you wish to contribute:
 
-1. Fork the project
-2. Create a branch for your feature (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+- Fork the project
+
+- Create a branch (git checkout -b feature/Improvement)
+
+- Commit your changes (git commit -m 'Add some Improvement')
+
+- Push to the branch (git push origin feature/Improvement)
+
+- Open a Pull Request
 
 ## 📄 License
+Copyright © 2025 Zintra. All Rights Reserved.
 
-This project is under the MIT License. See `LICENSE` file for more details.
+This project is proprietary software.
+
+✅ Permitted: Permission is granted to view, download, and execute this code for purely educational and personal learning purposes.
+
+❌ Prohibited: Commercial use, redistribution, and modification of this code for public projects or products are not allowed without the explicit permission of the author.
 
 ## 👤 Author
 
-**Your Name**
+**Zintradev**
 - GitHub: [@Zintradev](https://github.com/Zintradev)
 
 ## 🙏 Acknowledgements
