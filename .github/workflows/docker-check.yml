@@ -1,0 +1,17 @@
+name: Docker Build Check
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-docker-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build Backend Image
+        run: docker build -t threat-backend -f Dockerfile.backend .
+
+      - name: Build Frontend Image
+        run: docker build -t threat-frontend -f Dockerfile.frontend .

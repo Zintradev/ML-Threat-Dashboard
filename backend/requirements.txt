@@ -1,0 +1,35 @@
+# === CORE API & WEB SERVER ===
+fastapi>=0.115.0
+uvicorn>=0.30.0
+python-multipart
+
+# === DATA SCIENCE & MACHINE LEARNING ===
+numpy<2.0.0
+pandas<2.0.0
+scikit-learn==1.2.2
+joblib>=1.3.0
+scipy<1.13.0
+
+# === JUPYTER NOTEBOOK ===
+jupyter
+notebook
+ipykernel
+matplotlib
+seaborn
+
+# === NETWORKING & HTTP ===
+requests
+aiohttp
+httpx
+
+# === NETWORK TRAFFIC ANALYSIS ===
+scapy
+mitmproxy
+
+# === UTILITIES & COMPATIBILITY ===
+cryptography
+pytz
+typing-extensions
+python-dateutil
+click
+colorama
