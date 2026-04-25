@@ -30,7 +30,7 @@ scapy==2.5.0
 # === MITMPROXY & DEPENDENCIES ===
 mitmproxy==9.0.1
 h11==0.14.0
-bcrypt==3.2.2
+bcrypt==5.0.0
 cryptography==38.0.4
 blinker==1.6.2
 certifi==2022.12.7
