@@ -25,7 +25,7 @@ requests==2.28.2
 aiohttp==3.8.4
 
 # === NETWORK TRAFFIC ANALYSIS ===
-scapy==2.5.0
+scapy==2.7.0
 
 # === MITMPROXY & DEPENDENCIES ===
 mitmproxy==9.0.1
