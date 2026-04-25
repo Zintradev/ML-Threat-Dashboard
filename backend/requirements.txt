@@ -1,7 +1,7 @@
 # === CORE API & WEB SERVER ===
 fastapi==0.88.0
 uvicorn==0.20.0
-python-multipart==0.0.5
+python-multipart==0.0.26
 
 # === DATA SCIENCE & MACHINE LEARNING ===
 numpy==1.23.5
