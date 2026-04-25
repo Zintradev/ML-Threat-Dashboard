@@ -47,8 +47,7 @@ def test_rate_limiter():
     limiter = RateLimiter()
     ip = "192.168.1.50"
     
-    # En tu main.py actual, el límite es de 50 peticiones
-    # Hacemos 50 peticiones permitidas
+    # Hacemos 50 peticiones permitidas (límite actual en main.py)
     for _ in range(50):
         assert limiter.is_allowed(ip) == True
         
