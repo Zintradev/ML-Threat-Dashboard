@@ -34,7 +34,7 @@ bcrypt==3.2.2
 cryptography==38.0.4
 blinker==1.6.2
 certifi==2022.12.7
-urllib3==1.26.15
+urllib3==2.6.3
 wsproto==1.2.0
 publicsuffix2==2.20191221
 zstandard==0.19.0
