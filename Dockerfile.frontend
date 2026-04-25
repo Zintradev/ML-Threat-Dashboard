@@ -3,13 +3,13 @@ FROM node:18-alpine AS builder
 WORKDIR /app
 
 # Copiar package files
-COPY frontend/ml-threat-dashboard/package*.json ./
+COPY frontend/package*.json ./
 
 # Instalar dependencias
 RUN npm ci
 
 # Copiar código fuente
-COPY frontend/ml-threat-dashboard/ .
+COPY frontend/ .
 
 # Build de producción
 ENV REACT_APP_API_URL=/api
