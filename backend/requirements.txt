@@ -5,7 +5,7 @@ python-multipart==0.0.26
 
 # === DATA SCIENCE & MACHINE LEARNING ===
 numpy==2.2.6
-pandas==3.0.2
+pandas==2.2.3
 scikit-learn==1.8.0
 joblib==1.5.3
 scipy==1.17.1
