@@ -189,7 +189,7 @@ class RealTimeMLModel:
 
 class TrafficCaptureSystem:
     def __init__(self):
-        self.traffic_data = []
+        self.traffic_data = deque(maxlen=10000)
         self.ml_model = RealTimeMLModel()
         self.proxy_process = None
         self.is_running = False
