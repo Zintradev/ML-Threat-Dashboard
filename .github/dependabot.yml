@@ -7,13 +7,15 @@ version: 2
 updates:
   version: 2
 updates:
-  - package-ecosystem: "npm"
-    directory: "/"
+ version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/backend"
     schedule:
       interval: "weekly"
 
-  - package-ecosystem: "pip"
-    directory: "/"
+  - package-ecosystem: "npm"
+    directory: "/frontend/ml-threat-dashboard"
     schedule:
       interval: "weekly"
 
