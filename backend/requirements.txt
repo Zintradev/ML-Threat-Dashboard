@@ -24,7 +24,7 @@ aiohttp>=3.9.0
 httpx>=0.26.0
 
 # === NETWORK TRAFFIC ANALYSIS ===
-mitmproxy==9.0.1
+mitmproxy==12.2.2
 scapy>=2.5.0
 
 # === UTILITIES & COMPATIBILITY ===
