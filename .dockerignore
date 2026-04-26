@@ -1,0 +1,59 @@
+# Entornos virtuales
+ml_threat_dashboard/
+venv/
+env/
+.venv/
+ENV/
+
+# Node modules
+node_modules/
+frontend/ml-threat-dashboard/node_modules/
+
+# Build artifacts
+frontend/ml-threat-dashboard/build/
+dist/
+build/
+
+# Logs
+*.log
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Temporary files
+*.tmp
+resultados_*.json
+
+# Large unused models (no incluir en imagen Docker)
+backend/network_traffic_model.pkl
+backend/rf_model.pkl
+backend/rf_model_nsl_kdd.pkl
+
+# Test files
+.pytest_cache/
+.coverage
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Documentation
+*.md
+!README.md
