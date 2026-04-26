@@ -1,15 +1,15 @@
-## Descripción
-[Explica brevemente qué hace este Pull Request y por qué es necesario]
+## Description
+[Briefly explain what this Pull Request does and why it is necessary]
 
-## Tipo de cambio
-- [ ] Corrección de un Bug (Bugfix)
-- [ ] Nueva Funcionalidad (Feature)
-- [ ] Mejora de documentación o refactorización
+## Type of Change
+- [ ] Bug fix (non-breaking change which fixes an issue)
+- [ ] New feature (non-breaking change which adds functionality)
+- [ ] Documentation update or Refactoring (code improvement)
 
 ## Checklist:
-- [ ] He probado mi código localmente.
-- [ ] Mi código no genera nuevos warnings o errores en la consola.
-- [ ] He actualizado la documentación si era necesario.
+- [ ] I have tested my code locally.
+- [ ] My code does not generate new warnings or errors in the console.
+- [ ] I have updated the documentation accordingly (if needed).
 
-## Issues relacionados
-Cierra # (escribe el número del issue aquí si aplica)
+## Related Issues
+Closes # (enter the issue number here if applicable)
