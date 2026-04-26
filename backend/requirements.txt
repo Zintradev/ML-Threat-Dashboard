@@ -1,0 +1,38 @@
+# === CORE API & WEB SERVER ===
+# 0.92.0 es la más alta que permite convivir con el bloqueo de mitmproxy
+fastapi==0.92.0
+uvicorn>=0.27.0
+python-multipart
+
+# === DATA SCIENCE & MACHINE LEARNING ===
+scikit-learn==1.3.2
+joblib>=1.3.2
+numpy>=1.24.4,<2.0.0
+pandas>=2.0.3,<2.1.0
+scipy>=1.10.1,<1.11.0
+
+# === JUPYTER NOTEBOOK ===
+jupyter
+notebook
+ipykernel
+matplotlib>=3.7.5
+seaborn>=0.12.2
+
+# === NETWORKING & HTTP ===
+requests>=2.31.0
+aiohttp>=3.9.0
+httpx>=0.26.0
+
+# === NETWORK TRAFFIC ANALYSIS ===
+mitmproxy==9.0.1
+scapy>=2.5.0
+
+# === UTILITIES & COMPATIBILITY ===
+# Estas dos versiones son las que desbloquean el error de mitmproxy
+cryptography>=38.0.0,<38.1.0
+typing-extensions==4.4.0
+pytz
+python-dateutil
+click>=8.1.7
+colorama
+pytest>=8.0.0
