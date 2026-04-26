@@ -1,0 +1,46 @@
+name: Backend CI (Python)
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: "pip"
+
+      - name: Install Tools and Upgrade Pip
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          pip install flake8 pytest pytest-asyncio anyio httpx safety
+
+      - name: Install project dependencies
+        run: |
+          cd backend
+          pip install -r requirements.txt
+
+      - name: Lint with flake8
+        working-directory: ./backend
+        run: |
+          # Solo busca errores graves de sintaxis y lógica (E9, F63, F7, F82)
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+
+      - name: Run tests with pytest
+        working-directory: ./backend
+        run: python -m pytest test_main.py -v
+
+      - name: Security scan (Safety)
+        run: safety check
+        continue-on-error: true

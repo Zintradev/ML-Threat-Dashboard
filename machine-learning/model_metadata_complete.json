@@ -1,0 +1,82 @@
+{
+  "model_info": {
+    "type": "RandomForest",
+    "accuracy": 0.722175398128022,
+    "n_features": 42,
+    "n_classes": 24,
+    "classes": [
+      "back",
+      "buffer_overflow",
+      "ftp_write",
+      "guess_passwd",
+      "imap",
+      "ipsweep",
+      "land",
+      "loadmodule",
+      "multihop",
+      "neptune",
+      "nmap",
+      "normal",
+      "perl",
+      "phf",
+      "pod",
+      "portsweep",
+      "rootkit",
+      "satan",
+      "smurf",
+      "spy",
+      "teardrop",
+      "warezclient",
+      "warezmaster",
+      "unknown_attack"
+    ],
+    "timestamp": "2025-11-18T19:35:29.139283"
+  },
+  "data_info": {
+    "unseen_classes_handled": 17,
+    "unseen_classes_original": [
+      "xsnoop",
+      "processtable",
+      "sqlattack",
+      "httptunnel",
+      "saint",
+      "worm",
+      "mscan",
+      "named",
+      "snmpgetattack",
+      "xlock",
+      "xterm",
+      "apache2",
+      "udpstorm",
+      "sendmail",
+      "snmpguess",
+      "ps",
+      "mailbomb"
+    ],
+    "unknown_instances_count": 3750,
+    "unknown_mapping_details": {
+      "saint": 319,
+      "mscan": 996,
+      "apache2": 737,
+      "snmpgetattack": 178,
+      "processtable": 685,
+      "httptunnel": 133,
+      "ps": 15,
+      "snmpguess": 331,
+      "mailbomb": 293,
+      "named": 17,
+      "sendmail": 14,
+      "xterm": 13,
+      "worm": 2,
+      "xlock": 9,
+      "xsnoop": 4,
+      "sqlattack": 2,
+      "udpstorm": 2
+    }
+  },
+  "training_params": {
+    "n_estimators": 150,
+    "max_depth": 25,
+    "class_weight": "balanced"
+  }
+}
