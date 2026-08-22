@@ -96,14 +96,11 @@ body::before {
 
 
 .header {
-  background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: #0f0f1e;
   padding: 1.5rem 2rem;
   border-bottom: 1px solid var(--glass-border);
   box-shadow: var(--shadow-md);
-  position: sticky;
-  top: 0;
+  position: relative;
   z-index: 100;
 }
 
@@ -547,10 +544,10 @@ body::before {
 
 .traffic-item {
   background: var(--bg-card);
-  border: 2px solid var(--border-primary);
-  border-radius: 12px;
-  padding: 1.25rem;
-  margin-bottom: 1rem;
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  margin-bottom: 0.5rem;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -581,8 +578,47 @@ body::before {
 .traffic-main {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0;
+}
+
+.traffic-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.traffic-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.attack-type-compact {
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid;
+  font-size: 0.7rem;
+  font-weight: 700;
+  background: var(--bg-card-hover);
+}
+
+.mitre-compact {
+  color: #8b5cf6;
+  border: 1px solid #8b5cf6;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.confidence-compact {
+  font-size: 0.75rem;
+  font-weight: 700;
 }
 
 .method-badge {
@@ -772,18 +808,16 @@ body::before {
 }
 
 .confidence-warning {
-  margin-top: 0.75rem;
-  padding: 0.75rem;
-  background: var(--accent-warning-glow);
-  border: 2px solid var(--accent-warning);
-  border-radius: 8px;
-  font-size: 0.8125rem;
-  color: var(--accent-warning);
-  font-weight: 700;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  box-shadow: 0 0 15px var(--accent-warning-glow);
+  margin-top: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  background: var(--accent-warning-glow);
+  border: 1px solid var(--accent-warning);
+  border-radius: 6px;
+  color: var(--accent-warning);
+  font-size: 0.75rem;
 }
 
 .warning-icon {

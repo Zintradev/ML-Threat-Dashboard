@@ -192,47 +192,8 @@ const Dashboard: React.FC = () => {
                 <span className="info-label">Proxy Config:</span>
                 <span className="info-value">127.0.0.1:8080</span>
               </div>
-              <div className="info-row">
-                <span className="info-label">Data Source:</span>
-                <span className="info-value highlight">REAL TRAFFIC</span>
-              </div>
-              <div className="instruction">
-                💡 Set this proxy in your browser and browse naturally
-              </div>
             </div>
           </div>
-
-          {}
-          {systemStatus && (
-            <div className="status-card glass-card">
-              <div className="card-header">
-                <div className="card-icon">🖥️</div>
-                <h3>System Status</h3>
-              </div>
-              <div className="status-grid">
-                <div className={`status-item ${systemStatus.components.ml_model.real_model ? 'status-success' : 'status-warning'}`}>
-                  <div className="status-icon">🤖</div>
-                  <div className="status-content">
-                    <div className="status-label">ML Model</div>
-                    <div className="status-value">{systemStatus.components.ml_model.real_model ? 'REAL MODEL' : 'MOCK'}</div>
-                  </div>
-                </div>
-                <div className="status-item status-success">
-                  <div className="status-icon">⚡</div>
-                  <div className="status-content">
-                    <div className="status-label">Mode</div>
-                    <div className="status-value">LIVE ANALYSIS</div>
-                  </div>
-                </div>
-              </div>
-              {systemStatus.components.mitmproxy.status === 'running' && (
-                <div className="proxy-active">
-                  <div className="active-indicator"></div>
-                  <span>🟢 Actively capturing REAL traffic</span>
-                </div>
-              )}
-            </div>
-          )}
         </div>
 
         {}
@@ -313,82 +274,47 @@ const Dashboard: React.FC = () => {
                     return (
                       <div key={index} className={`traffic-item ${traffic.is_threat ? 'threat-item' : 'normal-item'}`}>
                         <div className="traffic-main">
-                          <div className="method-badge" style={{ backgroundColor: attackColor }}>
-                            {traffic.method}
-                          </div>
-                          <div className="traffic-content">
-                            <div className="url" title={traffic.url}>
-                              {getDisplayUrl(traffic)}
+                          <div className="traffic-left">
+                            <div className="method-badge" style={{ backgroundColor: attackColor }}>
+                              {traffic.method}
                             </div>
-                            <div className="traffic-meta">
-                              <span className="source">{traffic.src_ip}</span>
-                              <span className="timestamp">
-                                {new Date(traffic.timestamp).toLocaleTimeString()}
-                              </span>
+                            <div className="traffic-content">
+                              <div className="url" title={traffic.url}>
+                                {getDisplayUrl(traffic)}
+                              </div>
+                              <div className="traffic-meta">
+                                <span className="source">{traffic.src_ip}</span>
+                                <span className="timestamp">
+                                  {new Date(traffic.timestamp).toLocaleTimeString()}
+                                </span>
+                              </div>
                             </div>
                           </div>
-                          <div className="traffic-status">
-                            <div
-                              className={`threat-badge ${traffic.is_threat ? 'threat' : 'normal'}`}
-                              style={{
-                                backgroundColor: traffic.is_threat ? '#ef4444' : '#10b981'
-                              }}
+
+                          <div className="traffic-right">
+                            <span
+                              className="attack-type-compact"
+                              style={{ color: attackColor, borderColor: attackColor }}
                             >
-                              {traffic.is_threat ? 'THREAT' : 'NORMAL'}
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="traffic-details">
-                          <div className="detail-group">
-                            <div className="detail-item">
-                              <span className="detail-label">Attack Type:</span>
-                              <span
-                                className="attack-type"
-                                style={{ color: attackColor }}
-                              >
-                                {traffic.ml_analysis.attack_type}
-                              </span>
-                            </div>
-                            <div className="detail-item">
-                              <span className="detail-label">Confidence:</span>
-                              <div className="confidence-display">
-                                <div
-                                  className="confidence-bar"
-                                  style={{
-                                    width: `${traffic.ml_analysis.confidence * 100}%`,
-                                    backgroundColor: confidenceColor
-                                  }}
-                                ></div>
-                                <span
-                                  className="confidence-value"
-                                  style={{ color: confidenceColor }}
-                                >
-                                  {Math.round(traffic.ml_analysis.confidence * 100)}% ({confidenceLevel})
-                                </span>
-                              </div>
-                            </div>
+                              {traffic.ml_analysis.attack_type}
+                            </span>
+                            
                             {traffic.ml_analysis.mitre_id && (
-                              <div className="detail-item">
-                                <span className="detail-label">MITRE ATT&CK:</span>
-                                <span className="mitre-id" style={{ color: '#8b5cf6', fontWeight: 'bold' }}>
-                                  {traffic.ml_analysis.mitre_id}
-                                </span>
-                              </div>
+                              <span className="mitre-compact">
+                                {traffic.ml_analysis.mitre_id}
+                              </span>
                             )}
+                            
+                            <span className="confidence-compact" style={{ color: confidenceColor }}>
+                              {Math.round(traffic.ml_analysis.confidence * 100)}% ({confidenceLevel})
+                            </span>
                           </div>
-
-                          {traffic.ml_analysis.real_ml && (
-                            <div className="ml-badge">
-                              🤖 Real ML Analysis
-                            </div>
-                          )}
                         </div>
 
                         {traffic.ml_analysis.confidence < 0.6 && (
-                          <div className="confidence-warning">
+                          <div className="confidence-warning compact-warning">
                             <span className="warning-icon">⚠️</span>
-                            Low confidence prediction - Consider model retraining
+                            Low confidence
                           </div>
                         )}
                       </div>

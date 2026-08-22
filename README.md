@@ -12,9 +12,23 @@ A real-time cybersecurity dashboard that captures web traffic via proxy and anal
 
 ## Quick Start (Docker)
 
-1. Build and start the containers:
-   docker-compose up --build
+The fastest way to launch the ML Threat Dashboard is using the provided startup scripts.
 
+**On Windows:**
+Double-click `start.bat` or run it from your terminal:
+```cmd
+start.bat
+```
+
+**On Linux/macOS:**
+Make the script executable and run it:
+```bash
+chmod +x start.sh
+./start.sh
+```
+
+Alternatively, you can manually build and start the containers:
+1. `docker compose up --build -d`
 2. Open the dashboard: http://localhost:3000
 3. Backend API: http://localhost:8000
 
