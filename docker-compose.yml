@@ -1,5 +1,4 @@
 version: "3.8"
-
 services:
   backend:
     build:
@@ -8,6 +7,7 @@ services:
     container_name: ml-threat-backend
     ports:
       - "8000:8000"
+      - "8080:8080" 
     volumes:
       - ./backend:/app
       - ./data:/data

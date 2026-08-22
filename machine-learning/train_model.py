@@ -1,192 +1,100 @@
-import pandas as pd
-import numpy as np
-from sklearn.preprocessing import LabelEncoder, StandardScaler
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import cross_val_score
-from sklearn.feature_selection import SelectFromModel
-import joblib
-import re
-import warnings
 import os
+import joblib
+import pandas as pd
+from sklearn.pipeline import Pipeline
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import classification_report, accuracy_score
 
-warnings.filterwarnings('ignore')
+def generate_synthetic_data():
+    """Generate raw HTTP strings and corresponding labels."""
+    data = []
+    
+    # Normal Traffic
+    normal_payloads = [
+        "GET / HTTP/1.1",
+        "GET /index.php HTTP/1.1",
+        "GET /about.html HTTP/1.1",
+        "GET /images/logo.png HTTP/1.1",
+        "GET /css/style.css HTTP/1.1",
+        "POST /login.php?user=test HTTP/1.1",
+        "GET /search?q=apple HTTP/1.1",
+        "GET /products.php?id=10 HTTP/1.1",
+        "GET /api/v1/users HTTP/1.1"
+    ]
+    data.extend([(payload, "Normal") for payload in normal_payloads * 20])
+    
+    # SQL Injection
+    sqli_payloads = [
+        "GET /search.php?q=' OR '1'='1 HTTP/1.1",
+        "GET /login.php?user=admin'-- HTTP/1.1",
+        "GET /items?id=1 UNION SELECT 1,2,3-- HTTP/1.1",
+        "POST /auth?pass=' AND 1=1-- HTTP/1.1",
+        "GET /delete?id='; DROP TABLE users-- HTTP/1.1",
+        "GET /product?q=' OR 'a'='a HTTP/1.1",
+        "GET /search?q=1; EXEC xp_cmdshell('dir') HTTP/1.1"
+    ]
+    data.extend([(payload, "SQL Injection") for payload in sqli_payloads * 20])
+    
+    # XSS
+    xss_payloads = [
+        "GET /search.php?q=<script>alert('XSS')</script> HTTP/1.1",
+        "GET /profile?bio=<body onload=alert('XSS')> HTTP/1.1",
+        "GET /view?img=<img src=x onerror=alert('XSS')> HTTP/1.1",
+        "GET /link?url=javascript:alert('XSS') HTTP/1.1",
+        "POST /comment?text=<svg/onload=alert(1)> HTTP/1.1",
+        "GET /search?q=hello<script src=http://evil.com/xss.js></script> HTTP/1.1"
+    ]
+    data.extend([(payload, "XSS") for payload in xss_payloads * 20])
+    
+    # Path Traversal
+    traversal_payloads = [
+        "GET /../../../etc/passwd HTTP/1.1",
+        "GET /../../windows/win.ini HTTP/1.1",
+        "GET /../config.php HTTP/1.1",
+        "GET /....//....//....//etc/passwd HTTP/1.1",
+        "GET /download?file=../../../../etc/shadow HTTP/1.1",
+        "GET /view?path=..\\..\\..\\windows\\system32\\cmd.exe HTTP/1.1"
+    ]
+    data.extend([(payload, "Path Traversal") for payload in traversal_payloads * 20])
+    
+    # We do not train DoS via ML payloads, DoS is handled by RateLimiter
+    
+    df = pd.DataFrame(data, columns=["payload", "label"])
+    return df
 
-print("✅ Librerías importadas")
-
-class RealTrafficClassifier:
-    """Clasificador optimizado para tráfico HTTP/HTTPS real"""
+def main():
+    print("[*] Generating synthetic HTTP string dataset...")
+    df = generate_synthetic_data()
     
-    def __init__(self):
-        self.model = None
-        self.scaler = StandardScaler()
-        self.label_encoders = {}
-        self.target_encoder = LabelEncoder()
-        self.feature_selector = None
-        self.is_trained = False
-        
-    def create_synthetic_training_data(self):
-        """Crear datos de entrenamiento sintéticos basados en patrones reales"""
-        print("🎯 Creando dataset de entrenamiento sintético...")
-        
-        normal_patterns = [
-            {'method': 'GET', 'path': '/', 'status': 200, 'size': 1500},
-            {'method': 'GET', 'path': '/index.html', 'status': 200, 'size': 2000},
-            {'method': 'GET', 'path': '/images/logo.png', 'status': 200, 'size': 5000},
-            {'method': 'POST', 'path': '/login', 'status': 200, 'size': 800},
-            {'method': 'GET', 'path': '/products', 'status': 200, 'size': 3000}
-        ]
-        
-        attack_patterns = {
-            'sql_injection': [
-                {'method': 'GET', 'path': "/search?q=' OR '1'='1", 'status': 200, 'size': 500},
-                {'method': 'GET', 'path': "/admin'--", 'status': 200, 'size': 600},
-                {'method': 'POST', 'path': '/login', 'status': 401, 'size': 400},
-                {'method': 'GET', 'path': "/union select 1,2,3--", 'status': 200, 'size': 700}
-            ],
-            'xss': [
-                {'method': 'GET', 'path': '/search?q=<script>alert(1)</script>', 'status': 200, 'size': 800},
-                {'method': 'POST', 'path': '/comment', 'status': 200, 'size': 900},
-                {'method': 'GET', 'path': '/?param=javascript:alert(1)', 'status': 200, 'size': 600}
-            ],
-            'path_traversal': [
-                {'method': 'GET', 'path': '/../../etc/passwd', 'status': 404, 'size': 300},
-                {'method': 'GET', 'path': '/..%2f..%2fwin.ini', 'status': 404, 'size': 350},
-                {'method': 'GET', 'path': '/../../../config.php', 'status': 404, 'size': 400}
-            ],
-            'dos': [
-                {'method': 'GET', 'path': '/', 'status': 200, 'size': 100},
-                {'method': 'POST', 'path': '/api', 'status': 200, 'size': 50},
-                {'method': 'GET', 'path': '/images/1.jpg', 'status': 200, 'size': 80}
-            ]
-        }
-        
-        data = []
-        labels = []
-        
-        for _ in range(1000):
-            pattern = normal_patterns[np.random.randint(0, len(normal_patterns))]
-            features = self._extract_features_from_pattern(pattern, 'normal')
-            data.append(features)
-            labels.append('normal')
-        
-        for attack_type, patterns in attack_patterns.items():
-            for _ in range(250):
-                pattern = patterns[np.random.randint(0, len(patterns))]
-                features = self._extract_features_from_pattern(pattern, attack_type)
-                data.append(features)
-                labels.append(attack_type)
-        
-        df = pd.DataFrame(data)
-        return df, pd.Series(labels)
+    X = df["payload"]
+    y = df["label"]
     
-    def _extract_features_from_pattern(self, pattern, label):
-        """Extraer características de un patrón de tráfico"""
-        method = pattern['method']
-        path = pattern['path']
-        status = pattern['status']
-        size = pattern['size']
-        
-        # Características basadas en el patrón
-        features = {
-            'method_encoded': self._encode_method(method),
-            'path_length': len(path),
-            'has_special_chars': int(any(c in path for c in ["'", '"', '<', '>', '(', ')', ';'])),
-            'has_encoding': int('%' in path),
-            'has_sql_keywords': int(any(kw in path.lower() for kw in ['select', 'union', 'insert', 'drop', 'or '])),
-            'has_script_tags': int('<script' in path.lower()),
-            'has_path_traversal': int(any(pt in path for pt in ['../', '..\\', 'etc/passwd'])),
-            'status_code': status,
-            'response_size': size,
-            'is_error': int(status >= 400),
-            'request_frequency': np.random.poisson(5),  # Frecuencia de requests
-            'unique_paths_ratio': np.random.uniform(0.1, 1.0),
-            'error_rate': np.random.uniform(0.0, 0.3) if label == 'normal' else np.random.uniform(0.1, 0.8)
-        }
-        
-        return features
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     
-    def _encode_method(self, method):
-        """Codificar método HTTP"""
-        method_map = {'GET': 0, 'POST': 1, 'PUT': 2, 'DELETE': 3, 'HEAD': 4}
-        return method_map.get(method, 5)
+    print("[*] Building the NLP Pipeline...")
+    pipeline = Pipeline([
+        ('tfidf', TfidfVectorizer(analyzer='char_wb', ngram_range=(2, 5))),
+        ('clf', RandomForestClassifier(n_estimators=100, random_state=42))
+    ])
     
-    def train_flexible_model(self):
-        """Entrenar modelo con datos sintéticos y reales"""
-        print("🤖 Entrenando modelo flexible...")
-        
-        # Crear datos de entrenamiento
-        X_train, y_train = self.create_synthetic_training_data()
-        
-        # Procesamiento
-        X_processed = self._preprocess_features(X_train)
-        y_encoded = self.target_encoder.fit_transform(y_train)
-        
-        # Selección de características
-        if X_processed.shape[1] > 10:
-            print("🔍 Realizando selección de características...")
-            self.feature_selector = SelectFromModel(
-                RandomForestClassifier(n_estimators=50, random_state=42),
-                threshold='median'
-            )
-            X_processed = self.feature_selector.fit_transform(X_processed, y_encoded)
-            print(f"   Features seleccionados: {X_processed.shape[1]}")
-        
-        # Modelo
-        self.model = RandomForestClassifier(
-            n_estimators=150,
-            max_depth=20,
-            min_samples_split=5,
-            min_samples_leaf=2,
-            max_features='sqrt',
-            class_weight='balanced',
-            random_state=42,
-            n_jobs=-1
-        )
-        
-        # Validación cruzada
-        cv_scores = cross_val_score(self.model, X_processed, y_encoded, cv=5, scoring='accuracy')
-        print(f"📊 Validación Cruzada: {cv_scores.mean():.3f} (±{cv_scores.std():.3f})")
-        
-        # Entrenamiento final
-        self.model.fit(X_processed, y_encoded)
-        self.is_trained = True
-        
-        print(f"✅ Modelo entrenado - {len(self.target_encoder.classes_)} clases")
-        print(f"📋 Clases: {list(self.target_encoder.classes_)}")
-        return self
+    print("[*] Training the pipeline...")
+    pipeline.fit(X_train, y_train)
     
-    def _preprocess_features(self, X):
-        """Preprocesar características"""
-        numeric_cols = X.select_dtypes(include=[np.number]).columns
-        if len(numeric_cols) > 0:
-            X_scaled = self.scaler.fit_transform(X)
-            return X_scaled
-        return X.values
+    print("[*] Evaluating the model...")
+    y_pred = pipeline.predict(X_test)
+    acc = accuracy_score(y_test, y_pred)
+    print(f"Accuracy: {acc:.4f}")
+    print(classification_report(y_test, y_pred))
     
-    def save_model(self, filepath):
-        """Guardar modelo entrenado"""
-        if not self.is_trained:
-            raise ValueError("No hay modelo entrenado para guardar.")
-            
-        model_data = {
-            'model': self.model,
-            'scaler': self.scaler,
-            'target_encoder': self.target_encoder,
-            'feature_selector': self.feature_selector,
-            'is_trained': self.is_trained
-        }
-        
-        joblib.dump(model_data, filepath, compress=3)
-        print(f"💾 Modelo guardado en: {filepath}")
+    backend_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "backend")
+    os.makedirs(backend_dir, exist_ok=True)
+    model_path = os.path.join(backend_dir, "ml_pipeline.pkl")
+    
+    print(f"[*] Saving unified pipeline to {model_path}...")
+    joblib.dump(pipeline, model_path)
+    print("[+] Done!")
 
 if __name__ == "__main__":
-    print("✅ Clasificador para tráfico real definido")
-    
-    # Entrenar modelo
-    classifier = RealTrafficClassifier()
-    classifier.train_flexible_model()
-    
-    # Guardar modelo
-    # Asegurar que el directorio existe
-    os.makedirs("../backend", exist_ok=True)
-    classifier.save_model('real_traffic_model.pkl')
+    main()

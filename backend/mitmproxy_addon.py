@@ -1,12 +1,16 @@
-from mitmproxy import http, ctx
+from mitmproxy import http
 import requests
-import json
 import time
+import logging
+
+# Ensure logging is properly configured for mitmproxy
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - [%(levelname)s] %(message)s')
+logger = logging.getLogger(__name__)
 
 class TrafficCaptureAddon:
     def __init__(self):
-        self.api_url = "http://localhost:8000/capture/request"
-        
+        self.api_url = "http://127.0.0.1:8000/capture/request"
+             
     def request(self, flow: http.HTTPFlow) -> None:
         """Capture HTTP requests"""
         try:
@@ -21,16 +25,19 @@ class TrafficCaptureAddon:
                 "query_params": dict(flow.request.query),
                 "headers": dict(flow.request.headers)
             }
-            
-            # Send to analysis API
+                         
             try:
-                requests.post(self.api_url, json=request_data, timeout=1)
-            except:
-                pass
-                
+                requests.post(self.api_url, json=request_data, timeout=1.0)
+            except requests.Timeout as t_err:
+                logger.warning(f"Timeout sending request data to dashboard API: {t_err}")
+            except requests.ConnectionError as c_err:
+                logger.error(f"Connection error sending request data to dashboard API: {c_err}")
+            except requests.RequestException as req_err:
+                logger.error(f"Request exception sending request data to dashboard API: {req_err}")
+                         
         except Exception as e:
-            ctx.log.error(f"Error capturing request: {e}")
-    
+            logger.error(f"Unexpected error capturing request: {e}")
+         
     def response(self, flow: http.HTTPFlow) -> None:
         """Capture HTTP responses"""
         try:
@@ -45,13 +52,17 @@ class TrafficCaptureAddon:
                 "status_code": flow.response.status_code,
                 "query_params": dict(flow.request.query)
             }
-            
+                         
             try:
-                requests.post(self.api_url, json=request_data, timeout=1)
-            except:
-                pass
-                
+                requests.post(self.api_url, json=request_data, timeout=1.0)
+            except requests.Timeout as t_err:
+                logger.warning(f"Timeout sending response data to dashboard API: {t_err}")
+            except requests.ConnectionError as c_err:
+                logger.error(f"Connection error sending response data to dashboard API: {c_err}")
+            except requests.RequestException as req_err:
+                logger.error(f"Request exception sending response data to dashboard API: {req_err}")
+                         
         except Exception as e:
-            ctx.log.error(f"Error capturing response: {e}")
+            logger.error(f"Unexpected error capturing response: {e}")
 
 addons = [TrafficCaptureAddon()]

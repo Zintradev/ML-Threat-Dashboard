@@ -24,7 +24,7 @@ def sql_injection_attack():
     for i, payload in enumerate(payloads):
         try:
             url = f"{BASE_URL}/search.php?q={payload}"
-            response = requests.get(url, proxies=PROXY, timeout=5)
+            response = requests.get(url, proxies=PROXY, timeout=0.1)
             print(f"[SQL] Attack #{i+1}: {payload[:30]}... -> Status: {response.status_code}")
             time.sleep(0.5)
         except Exception as e:
@@ -45,7 +45,7 @@ def xss_attack():
     for i, payload in enumerate(payloads):
         try:
             url = f"{BASE_URL}/search.php?q={payload}"
-            response = requests.get(url, proxies=PROXY, timeout=5)
+            response = requests.get(url, proxies=PROXY, timeout=0.1)
             print(f"[XSS] Attack #{i+1}: {payload[:20]}... -> Status: {response.status_code}")
             time.sleep(0.5)
         except Exception as e:
@@ -56,16 +56,25 @@ def dos_attack():
     print("[DOS] Starting DoS attack (50 rapid requests)...")
     time.sleep(2)
     
-    # Send requests very fast to trigger rate limiter (20 req / 5 sec)
+    # Send requests very fast to trigger rate limiter (15 req / 10 sec)
     for i in range(50):
         try:
-            response = requests.get(BASE_URL, proxies=PROXY, timeout=10)
+            # Use small timeout to not hang when the server rate limits/drops connection
+            response = requests.get(BASE_URL, proxies=PROXY, timeout=0.1)
             if (i + 1) % 10 == 0:
                 print(f"[DOS] Request #{(i + 1)}/50 -> Status: {response.status_code}")
-            # Small delay to avoid timeout but fast enough for rate limit
-            time.sleep(0.05)
+        except requests.exceptions.Timeout:
+            # Expected during DoS as connection is dropped or throttled
+            if (i + 1) % 10 == 0:
+                print(f"[DOS] Request #{(i + 1)}/50 -> Timeout (Expected)")
+        except requests.exceptions.ConnectionError:
+            if (i + 1) % 10 == 0:
+                print(f"[DOS] Request #{(i + 1)}/50 -> ConnectionError (Expected)")
         except Exception as e:
             print(f"[ERROR DOS #{i+1}]: {e}")
+        
+        # Extremely small delay to fire rapidly
+        time.sleep(0.01)
 
 def directory_traversal():
     """Directory Traversal attacks"""
@@ -82,7 +91,7 @@ def directory_traversal():
     for i, path in enumerate(paths):
         try:
             url = f"{BASE_URL}/{path}"
-            response = requests.get(url, proxies=PROXY, timeout=5)
+            response = requests.get(url, proxies=PROXY, timeout=0.1)
             print(f"[DIR] Attack #{i+1}: {path} -> Status: {response.status_code}")
             time.sleep(0.5)
         except Exception as e:
@@ -104,7 +113,7 @@ def normal_traffic():
     for i, path in enumerate(normal_paths):
         try:
             url = BASE_URL + path
-            response = requests.get(url, proxies=PROXY, timeout=5)
+            response = requests.get(url, proxies=PROXY, timeout=0.1)
             print(f"[NORMAL] Traffic #{i+1}: {path} -> Status: {response.status_code}")
             # Sleep enough to NOT trigger rate limit
             time.sleep(1.0)
@@ -120,9 +129,9 @@ if __name__ == "__main__":
     # Execute in sequence for better visualization
     sql_injection_attack()
     xss_attack() 
-    dos_attack()
     directory_traversal()
     normal_traffic()
+    dos_attack()
     
     print("=" * 60)
     print("ALL ATTACKS COMPLETED!")

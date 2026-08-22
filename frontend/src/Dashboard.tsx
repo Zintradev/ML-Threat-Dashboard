@@ -96,6 +96,9 @@ const Dashboard: React.FC = () => {
   const [isScanning, setIsScanning] = useState(false);
   const [results, setResults] = useState<AnalysisResults | null>(null);
   const [systemStatus, setSystemStatus] = useState<SystemStatus | null>(null);
+  const [activeTab, setActiveTab] = useState<string>('All');
+
+  const tabs = ['All', 'SQL Injection', 'XSS', 'Path Traversal', 'DoS', 'Normal'];
 
   const startScan = async () => {
     setIsScanning(true);
@@ -286,8 +289,23 @@ const Dashboard: React.FC = () => {
                     </div>
                   )}
                 </div>
+                
+                <div className="tabs-container">
+                  {tabs.map((tab) => (
+                    <button
+                      key={tab}
+                      className={`tab-button ${activeTab === tab ? 'active' : ''}`}
+                      onClick={() => setActiveTab(tab)}
+                    >
+                      {tab}
+                    </button>
+                  ))}
+                </div>
+
                 <div className="traffic-list">
-                  {results.analysis_results.map((traffic, index) => {
+                  {results.analysis_results
+                    .filter((traffic) => activeTab === 'All' || traffic.ml_analysis.attack_type === activeTab)
+                    .map((traffic, index) => {
                     const attackColor = getAttackColor(traffic.ml_analysis.attack_type);
                     const confidenceColor = getConfidenceColor(traffic.ml_analysis.confidence);
                     const confidenceLevel = getConfidenceLevel(traffic.ml_analysis.confidence);

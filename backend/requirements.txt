@@ -1,37 +1,9 @@
-# === CORE API & WEB SERVER ===
 fastapi
 uvicorn
-python-multipart
-
-# === DATA SCIENCE & MACHINE LEARNING ===
+pydantic
+requests
+mitmproxy
 scikit-learn
 joblib
 numpy
 pandas
-scipy
-
-# === JUPYTER NOTEBOOK ===
-jupyter
-notebook
-ipykernel
-matplotlib
-seaborn
-
-# === NETWORKING & HTTP ===
-requests
-aiohttp
-httpx
-
-# === NETWORK TRAFFIC ANALYSIS ===
-mitmproxy
-scapy
-
-# === UTILITIES & COMPATIBILITY ===
-cryptography
-typing-extensions
-pytz
-python-dateutil
-click
-colorama
-pytest
-anyio
