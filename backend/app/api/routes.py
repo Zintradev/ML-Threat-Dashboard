@@ -67,8 +67,8 @@ def status(sys: SystemState = Depends(get_system_state)):
         },
         "components": {
             "ml_model": {
-                "status": "loaded" if sys.analyzer.model_data else "fallback", 
-                "real_model": sys.analyzer.model_data is not None
+                "status": "loaded" if sys.analyzer.pipeline else "fallback", 
+                "real_model": sys.analyzer.pipeline is not None
             },
             "mitmproxy": {
                 "status": "running" if sys.proxy_service.is_running() else "stopped", 
