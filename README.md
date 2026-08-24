@@ -2,8 +2,6 @@
 
 A real-time cybersecurity dashboard that captures web traffic via proxy and analyzes it using Machine Learning to detect threats like SQL Injection, XSS, and DoS.
 
-![Status](https://img.shields.io/badge/Status-Work_in_Progress-yellow)
-
 ## Architecture
 
 - **Backend:** FastAPI, Mitmproxy (Traffic Capture), Scikit-learn (ML Model).
