@@ -51,3 +51,5 @@ npm start
 1. Click "Start MITMProxy & Scan" on the Dashboard.
 2. Configure your browser proxy to 127.0.0.1:8080.
 3. Browse websites; the dashboard will analyze traffic in real-time.
+
+[![Architecture diagram](https://gitdiagram.com/diagram-badge.svg)](https://gitdiagram.com/zintradev/ml-threat-dashboard?utm_source=readme&utm_medium=badge)
